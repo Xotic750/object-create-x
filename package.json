@@ -1,6 +1,6 @@
 {
   "name": "object-create-x",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Sham for Object.create",
   "homepage": "https://github.com/Xotic750/object-create-x",
   "author": {
@@ -29,9 +29,9 @@
     "url": "https://github.com/Xotic750/object-create-x/issues"
   },
   "dependencies": {
-    "object-define-properties-x": "^2.0.0",
     "is-primitive": "^2.0.0",
     "lodash.isnull": "^3.0.0",
+    "object-define-properties-x": "^2.0.4",
     "validate.io-undefined": "^1.0.3"
   },
   "devDependencies": {
