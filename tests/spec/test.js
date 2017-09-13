@@ -25,19 +25,70 @@ describe('create', function () {
   it('should create objects with no properties when called as `Object.create(null)`', function () {
     var obj = create(null);
 
-    expect('hasOwnProperty' in obj).toBe(false);
-    expect('toString' in obj).toBe(false);
     expect('constructor' in obj).toBe(false);
+    expect('hasOwnProperty' in obj).toBe(false);
+    expect('propertyIsEnumerable' in obj).toBe(false);
+    expect('isPrototypeOf' in obj).toBe(false);
+    expect('toLocaleString' in obj).toBe(false);
+    expect('toString' in obj).toBe(false);
+    expect('valueOf' in obj).toBe(false);
+
+    var prop;
+    // eslint-disable-next-line no-restricted-syntax
+    for (prop in obj) {
+      prop = false;
+      // eslint-disable-next-line no-restricted-syntax
+      break;
+    }
+
+    expect(prop).toBe(void 0);
 
     var protoIsEnumerable = false;
     // eslint-disable-next-line no-restricted-syntax
-    for (var k in obj) {
-      if (k === '__proto__') {
+    for (prop in obj) {
+      if (prop === '__proto__') {
         protoIsEnumerable = true;
       }
     }
+
     expect(protoIsEnumerable).toBe(false);
 
     expect(obj instanceof Object).toBe(false);
+  });
+
+  it('should create properties', function () {
+    var obj = create(null, { test: { value: true } });
+
+    expect(obj.test).toBe(true);
+  });
+
+  it('classical inheritance', function () {
+    // Shape - superclass
+    var Shape = function () {
+      this.x = 0;
+      this.y = 0;
+    };
+
+    // superclass method
+    Shape.prototype.move = function (x, y) {
+      this.x += x;
+      this.y += y;
+      return 'Shape moved.';
+    };
+
+    // Rectangle - subclass
+    var Rectangle = function () {
+      Shape.call(this); // call super constructor.
+    };
+
+    // subclass extends superclass
+    Rectangle.prototype = create(Shape.prototype);
+    Rectangle.prototype.constructor = Rectangle;
+
+    var rect = new Rectangle();
+
+    expect(rect instanceof Rectangle).toBe(true);
+    expect(rect instanceof Shape).toBe(true);
+    expect(rect.move(1, 1)).toBe('Shape moved.');
   });
 });
