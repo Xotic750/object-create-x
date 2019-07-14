@@ -1,5 +1,5 @@
 /**
- * @file Sham for Object.create
+ * @file Sham for Object.create.
  * @version 2.1.0
  * @author Xotic750 <Xotic750@gmail.com>
  * @copyright  Xotic750
@@ -9,18 +9,19 @@
 
 /* global ActiveXObject */
 
-'use strict';
+const attempt = require('attempt-x');
 
-var attempt = require('attempt-x');
-var nativeCreate = typeof Object.create === 'function' && Object.create;
+const nativeCreate = typeof Object.create === 'function' && Object.create;
 
-var isWorking;
+let isWorking;
+
 if (nativeCreate) {
-  var res = attempt(nativeCreate, null);
+  let res = attempt(nativeCreate, null);
   isWorking = res.threw === false && res.value && typeof res.value === 'object';
+
   if (isWorking) {
     // eslint-disable-next-line no-restricted-syntax,no-unused-vars
-    for (var _ in res.value) {
+    for (const _ in res.value) {
       isWorking = false;
       // eslint-disable-next-line no-restricted-syntax
       break;
@@ -28,39 +29,42 @@ if (nativeCreate) {
   }
 
   if (isWorking) {
-    res = attempt(nativeCreate, null, { test: { value: true } });
+    res = attempt(nativeCreate, null, {test: {value: true}});
     isWorking = res.threw === false && res.value && typeof res.value === 'object' && res.value.test === true;
   }
 
   if (isWorking) {
     // Shape - superclass
-    var Shape = function () {
+    const Shape = function() {
       this.x = 0;
       this.y = 0;
     };
 
     // superclass method
-    Shape.prototype.move = function (x, y) {
+    Shape.prototype.move = function(x, y) {
       this.x += x;
       this.y += y;
+
       return 'Shape moved.';
     };
 
     // Rectangle - subclass
-    var Rectangle = function () {
+    const Rectangle = function() {
       Shape.call(this); // call super constructor.
     };
 
     res = attempt(nativeCreate, Shape.prototype);
     isWorking = res.threw === false && res.value && typeof res.value === 'object';
+
     if (isWorking) {
       // subclass extends superclass
       Rectangle.prototype = res.value;
       Rectangle.prototype.constructor = Rectangle;
 
-      var rect = new Rectangle();
+      const rect = new Rectangle();
 
       isWorking = rect instanceof Rectangle;
+
       if (isWorking) {
         isWorking = rect instanceof Shape;
       }
@@ -72,40 +76,41 @@ if (nativeCreate) {
   }
 }
 
-var $create;
+let $create;
+
 if (isWorking) {
   $create = nativeCreate;
 } else {
-  var isPrimitive = require('is-primitive');
-  var isUndefined = require('validate.io-undefined');
-  var isNull = require('lodash.isnull');
-  var isFalsey = require('is-falsey-x');
-  var defineProperties = require('object-define-properties-x');
-  var doc = typeof document !== 'undefined' && document;
+  const isPrimitive = require('is-primitive');
+  const isUndefined = require('validate.io-undefined');
+  const isNull = require('lodash.isnull');
+  const isFalsey = require('is-falsey-x');
+  const defineProperties = require('object-define-properties-x');
+  const doc = typeof document !== 'undefined' && document;
 
   // Contributed by Brandon Benvie, October, 2012
-  var createEmpty;
-  var supportsProto = ({ __proto__: null } instanceof Object) === false;
+  let createEmpty;
+  const supportsProto = {__proto__: null} instanceof Object === false;
   // the following produces false positives
   // in Opera Mini => not a reliable check
   // Object.prototype.__proto__ === null
 
   if (supportsProto || isFalsey(doc)) {
-    createEmpty = function () {
-      return { __proto__: null };
+    createEmpty = function() {
+      return {__proto__: null};
     };
   } else {
     // Check for document.domain and active x support
     // No need to use active x approach when document.domain is not set
     // see https://github.com/es-shims/es5-shim/issues/150
     // variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
-    var shouldUseActiveX = function _shouldUseActiveX() {
+    const shouldUseActiveX = function _shouldUseActiveX() {
       // return early if document.domain not set
       if (isFalsey(doc.domain)) {
         return false;
       }
 
-      var result = attempt(function () {
+      const result = attempt(function() {
         return new ActiveXObject('htmlfile');
       });
 
@@ -115,12 +120,12 @@ if (isWorking) {
     // This supports IE8 when document.domain is used
     // see https://github.com/es-shims/es5-shim/issues/150
     // variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
-    var getEmptyViaActiveX = function _getEmptyViaActiveX() {
-      var xDoc = new ActiveXObject('htmlfile');
+    const getEmptyViaActiveX = function _getEmptyViaActiveX() {
+      let xDoc = new ActiveXObject('htmlfile');
       xDoc.write('<script></script>');
       xDoc.close();
 
-      var empty = xDoc.parentWindow.Object.prototype;
+      const empty = xDoc.parentWindow.Object.prototype;
       xDoc = null;
 
       return empty;
@@ -129,16 +134,16 @@ if (isWorking) {
     // The original implementation using an iframe
     // before the activex approach was added
     // see https://github.com/es-shims/es5-shim/issues/150
-    var getEmptyViaIFrame = function _getEmptyViaIFrame() {
-      var iframe = doc.createElement('iframe');
+    const getEmptyViaIFrame = function _getEmptyViaIFrame() {
+      let iframe = doc.createElement('iframe');
       iframe.style.display = 'none';
       // eslint-disable-next-line no-script-url
       iframe.src = 'javascript:';
 
-      var parent = doc.body || doc.documentElement;
+      const parent = doc.body || doc.documentElement;
       parent.appendChild(iframe);
 
-      var empty = iframe.contentWindow.Object.prototype;
+      const empty = iframe.contentWindow.Object.prototype;
       parent.removeChild(iframe);
       iframe = null;
 
@@ -150,10 +155,10 @@ if (isWorking) {
     // aside from Object.prototype itself. Instead, create a new global
     // object and *steal* its Object.prototype and strip it bare. This is
     // used as the prototype to create nullary objects.
-    createEmpty = function () {
+    createEmpty = function() {
       // Determine which approach to use
       // see https://github.com/es-shims/es5-shim/issues/150
-      var empty = shouldUseActiveX() ? getEmptyViaActiveX() : getEmptyViaIFrame();
+      const empty = shouldUseActiveX() ? getEmptyViaActiveX() : getEmptyViaIFrame();
 
       delete empty.constructor;
       delete empty.hasOwnProperty;
@@ -163,10 +168,11 @@ if (isWorking) {
       delete empty.toString;
       delete empty.valueOf;
 
-      var E = function Empty() {};
+      const E = function Empty() {};
+
       E.prototype = empty;
       // short-circuit future calls
-      createEmpty = function () {
+      createEmpty = function() {
         return new E();
       };
 
@@ -175,8 +181,8 @@ if (isWorking) {
   }
 
   $create = function create(prototype, properties) {
-    var object;
-    var T = function Type() {}; // An empty constructor.
+    let object;
+    const T = function Type() {}; // An empty constructor.
 
     if (isNull(prototype)) {
       object = createEmpty();

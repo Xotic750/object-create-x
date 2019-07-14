@@ -1,17 +1,19 @@
-'use strict';
+let create;
 
-var create;
 if (typeof module === 'object' && module.exports) {
   require('es5-shim');
   require('es5-shim/es5-sham');
+
   if (typeof JSON === 'undefined') {
     JSON = {};
   }
+
   require('json3').runInContext(null, JSON);
   require('es6-shim');
-  var es7 = require('es7-shim');
-  Object.keys(es7).forEach(function (key) {
-    var obj = es7[key];
+  const es7 = require('es7-shim');
+  Object.keys(es7).forEach(function(key) {
+    const obj = es7[key];
+
     if (typeof obj.shim === 'function') {
       obj.shim();
     }
@@ -21,9 +23,9 @@ if (typeof module === 'object' && module.exports) {
   create = returnExports;
 }
 
-describe('create', function () {
-  it('should create objects with no properties when called as `Object.create(null)`', function () {
-    var obj = create(null);
+describe('create', function() {
+  it('should create objects with no properties when called as `Object.create(null)`', function() {
+    const obj = create(null);
 
     expect('constructor' in obj).toBe(false);
     expect('hasOwnProperty' in obj).toBe(false);
@@ -33,7 +35,7 @@ describe('create', function () {
     expect('toString' in obj).toBe(false);
     expect('valueOf' in obj).toBe(false);
 
-    var prop;
+    let prop;
     // eslint-disable-next-line no-restricted-syntax
     for (prop in obj) {
       prop = false;
@@ -43,7 +45,7 @@ describe('create', function () {
 
     expect(prop).toBe(void 0);
 
-    var protoIsEnumerable = false;
+    let protoIsEnumerable = false;
     // eslint-disable-next-line no-restricted-syntax
     for (prop in obj) {
       if (prop === '__proto__') {
@@ -56,28 +58,29 @@ describe('create', function () {
     expect(obj instanceof Object).toBe(false);
   });
 
-  it('should create properties', function () {
-    var obj = create(null, { test: { value: true } });
+  it('should create properties', function() {
+    const obj = create(null, {test: {value: true}});
 
     expect(obj.test).toBe(true);
   });
 
-  it('classical inheritance', function () {
+  it('classical inheritance', function() {
     // Shape - superclass
-    var Shape = function () {
+    const Shape = function() {
       this.x = 0;
       this.y = 0;
     };
 
     // superclass method
-    Shape.prototype.move = function (x, y) {
+    Shape.prototype.move = function(x, y) {
       this.x += x;
       this.y += y;
+
       return 'Shape moved.';
     };
 
     // Rectangle - subclass
-    var Rectangle = function () {
+    const Rectangle = function() {
       Shape.call(this); // call super constructor.
     };
 
@@ -85,7 +88,7 @@ describe('create', function () {
     Rectangle.prototype = create(Shape.prototype);
     Rectangle.prototype.constructor = Rectangle;
 
-    var rect = new Rectangle();
+    const rect = new Rectangle();
 
     expect(rect instanceof Rectangle).toBe(true);
     expect(rect instanceof Shape).toBe(true);
