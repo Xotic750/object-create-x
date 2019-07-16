@@ -1,12 +1,3 @@
-/**
- * @file Sham for Object.create.
- * @version 2.1.0
- * @author Xotic750 <Xotic750@gmail.com>
- * @copyright  Xotic750
- * @license {@link <https://opensource.org/licenses/MIT> MIT}
- * @module object-create-x
- */
-
 /* global ActiveXObject */
 
 import attempt from 'attempt-x';
@@ -223,37 +214,5 @@ if (isWorking) {
  * specify property descriptors to be added to the newly-created object, with the corresponding property names.
  * @throws {TypeError} If the properties parameter isn't null or an object.
  * @returns {boolean} A new object with the specified prototype object and properties.
- * @example
- * var create = require('object-create-x');
- *
- * // Shape - superclass
- * function Shape() {
- *   this.x = 0;
- *   this.y = 0;
- * }
- *
- * // superclass method
- * Shape.prototype.move = function(x, y) {
- *   this.x += x;
- *   this.y += y;
- *   console.info('Shape moved.');
- * };
- *
- * // Rectangle - subclass
- * function Rectangle() {
- *   Shape.call(this); // call super constructor.
- * }
- *
- * // subclass extends superclass
- * Rectangle.prototype = create(Shape.prototype);
- * Rectangle.prototype.constructor = Rectangle;
- *
- * var rect = new Rectangle();
- *
- * console.log('Is rect an instance of Rectangle?',
- *   rect instanceof Rectangle); // true
- * console.log('Is rect an instance of Shape?',
- *   rect instanceof Shape); // true
- * rect.move(1, 1); // Outputs, 'Shape moved.'
  */
 export default $create;
