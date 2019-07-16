@@ -9,7 +9,7 @@
 
 /* global ActiveXObject */
 
-const attempt = require('attempt-x');
+import attempt from 'attempt-x';
 
 const nativeCreate = typeof Object.create === 'function' && Object.create;
 
@@ -256,4 +256,4 @@ if (isWorking) {
  *   rect instanceof Shape); // true
  * rect.move(1, 1); // Outputs, 'Shape moved.'
  */
-module.exports = $create;
+export default $create;
