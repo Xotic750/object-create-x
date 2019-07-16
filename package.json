@@ -53,7 +53,7 @@
     "is-falsey-x": "^2.0.8",
     "is-primitive": "^3.0.1",
     "lodash.isnull": "^3.0.0",
-    "object-define-properties-x": "^4.2.0",
+    "object-define-properties-x": "^5.0.0",
     "validate.io-undefined": "^1.0.3"
   },
   "devDependencies": {

@@ -26,6 +26,7 @@ if (typeof module === 'object' && module.exports) {
 describe('create', function() {
   it('should create objects with no properties when called as `Object.create(null)`', function() {
     expect.assertions(1);
+    expect.assertions(1);
     const obj = create(null);
 
     expect('constructor' in obj).toBe(false);
@@ -61,12 +62,14 @@ describe('create', function() {
 
   it('should create properties', function() {
     expect.assertions(1);
+    expect.assertions(1);
     const obj = create(null, {test: {value: true}});
 
     expect(obj.test).toBe(true);
   });
 
   it('classical inheritance', function() {
+    expect.assertions(1);
     expect.assertions(1); // Shape - superclass
     const Shape = function() {
       this.x = 0;
