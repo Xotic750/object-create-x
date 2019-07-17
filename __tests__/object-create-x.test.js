@@ -1,8 +1,8 @@
-let create;
+import create from '../src/object-create-x';
 
 describe('create', function() {
   it('should create objects with no properties when called as `Object.create(null)`', function() {
-    expect.assertions(1);
+    expect.assertions(10);
     const obj = create(null);
 
     expect('constructor' in obj).toBe(false);
@@ -14,17 +14,16 @@ describe('create', function() {
     expect('valueOf' in obj).toBe(false);
 
     let prop;
-    // eslint-disable-next-line no-restricted-syntax
+    /* eslint-disable-next-line guard-for-in,no-restricted-syntax */
     for (prop in obj) {
       prop = false;
-      // eslint-disable-next-line no-restricted-syntax
       break;
     }
 
     expect(prop).toBe(void 0);
 
     let protoIsEnumerable = false;
-    // eslint-disable-next-line no-restricted-syntax
+    /* eslint-disable-next-line no-restricted-syntax */
     for (prop in obj) {
       if (prop === '__proto__') {
         protoIsEnumerable = true;
@@ -44,7 +43,7 @@ describe('create', function() {
   });
 
   it('classical inheritance', function() {
-    expect.assertions(1); // Shape - superclass
+    expect.assertions(3); // Shape - superclass
     const Shape = function() {
       this.x = 0;
       this.y = 0;
