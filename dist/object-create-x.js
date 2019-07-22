@@ -2,13 +2,13 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-21T23:19:09.848Z",
+  "date": "2019-07-22T13:19:24.585Z",
   "describe": "",
   "description": "Sham for Object.create",
   "file": "object-create-x.js",
   "hash": "196426046fa168be59c4",
   "license": "MIT",
-  "version": "3.0.5"
+  "version": "3.0.6"
 }
 */
 (function webpackUniversalModuleDefinition(root, factory) {
