@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-27T15:09:49.054Z",
+  "date": "2019-07-27T20:25:09.505Z",
   "describe": "",
   "description": "Sham for Object.create",
   "file": "object-create-x.js",
-  "hash": "01ffb9e9b1eeaeb34a1d",
+  "hash": "17e627ca91c0cdc16a03",
   "license": "MIT",
   "version": "3.0.12"
 }
@@ -3124,17 +3124,15 @@ var object_define_properties_x_esm_defineProperties = function defineProperties(
 
 
 // CONCATENATED MODULE: ./dist/object-create-x.esm.js
-function object_create_x_esm_newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
-
 function object_create_x_esm_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { object_create_x_esm_typeof = function _typeof(obj) { return typeof obj; }; } else { object_create_x_esm_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return object_create_x_esm_typeof(obj); }
 
 
 
 
-/** @type {BooleanConstructor} */
 
-var object_create_x_esm_castBoolean = true.constructor;
-var nativeCreate = typeof Object.create === 'function' && Object.create;
+var object_create_x_esm_ObjectCtr = {}.constructor;
+var nCreate = object_create_x_esm_ObjectCtr.create;
+var nativeCreate = typeof nCreate === 'function' && nCreate;
 var object_create_x_esm_isWorking;
 
 if (nativeCreate) {
@@ -3222,13 +3220,13 @@ if (object_create_x_esm_isWorking) {
   var object_create_x_esm_doc = typeof document !== 'undefined' && document; // Contributed by Brandon Benvie, October, 2012
 
   var createEmpty;
-  var supportsProto = {
+  var supportsProto = !({
     __proto__: null
-  } instanceof Object === false; // the following produces false positives
+  } instanceof object_create_x_esm_ObjectCtr); // the following produces false positives
   // in Opera Mini => not a reliable check
   // Object.prototype.__proto__ === null
 
-  if (supportsProto || object_create_x_esm_castBoolean(object_create_x_esm_doc) === false) {
+  if (supportsProto || to_boolean_x_esm(object_create_x_esm_doc) === false) {
     createEmpty = function $createEmpty() {
       return {
         __proto__: null
@@ -3239,27 +3237,23 @@ if (object_create_x_esm_isWorking) {
     // No need to use active x approach when document.domain is not set
     // see https://github.com/es-shims/es5-shim/issues/150
     // variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
-    var shouldUseActiveX = function _shouldUseActiveX() {
-      var _this = this;
-
+    var object_create_x_esm_shouldUseActiveX = function shouldUseActiveX() {
       // return early if document.domain not set
-      if (object_create_x_esm_castBoolean(object_create_x_esm_doc.domain) === false) {
+      if (to_boolean_x_esm(object_create_x_esm_doc.domain) === false) {
         return false;
       }
 
-      var result = attempt_x_esm(function () {
-        object_create_x_esm_newArrowCheck(this, _this);
-
+      var result = attempt_x_esm(function attemptee() {
         /* eslint-disable-next-line no-undef */
         return new ActiveXObject('htmlfile');
-      }.bind(this));
+      });
       return result.threw === false && Boolean(result.value);
     }; // This supports IE8 when document.domain is used
     // see https://github.com/es-shims/es5-shim/issues/150
     // variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
 
 
-    var getEmptyViaActiveX = function _getEmptyViaActiveX() {
+    var getEmptyViaActiveX = function getEmptyViaActiveX() {
       /* eslint-disable-next-line no-undef */
       var xDoc = new ActiveXObject('htmlfile');
       /* eslint-disable-next-line no-useless-escape,prettier/prettier */
@@ -3275,7 +3269,7 @@ if (object_create_x_esm_isWorking) {
     // see https://github.com/es-shims/es5-shim/issues/150
 
 
-    var getEmptyViaIFrame = function _getEmptyViaIFrame() {
+    var getEmptyViaIFrame = function getEmptyViaIFrame() {
       var iframe = object_create_x_esm_doc.createElement('iframe');
       iframe.style.display = 'none';
       /* eslint-disable-next-line no-script-url */
@@ -3297,7 +3291,7 @@ if (object_create_x_esm_isWorking) {
     createEmpty = function $createEmpty() {
       // Determine which approach to use
       // see https://github.com/es-shims/es5-shim/issues/150
-      var empty = shouldUseActiveX() ? getEmptyViaActiveX() : getEmptyViaIFrame();
+      var empty = object_create_x_esm_shouldUseActiveX() ? getEmptyViaActiveX() : getEmptyViaIFrame();
       delete empty.constructor;
       delete empty.hasOwnProperty;
       delete empty.propertyIsEnumerable;

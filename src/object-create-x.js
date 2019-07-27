@@ -1,10 +1,11 @@
 import attempt from 'attempt-x';
 import isPrimitive from 'is-primitive';
 import defineProperties from 'object-define-properties-x';
+import toBoolean from 'to-boolean-x';
 
-/** @type {BooleanConstructor} */
-const castBoolean = true.constructor;
-const nativeCreate = typeof Object.create === 'function' && Object.create;
+const ObjectCtr = {}.constructor;
+const nCreate = ObjectCtr.create;
+const nativeCreate = typeof nCreate === 'function' && nCreate;
 
 let isWorking;
 
@@ -91,12 +92,12 @@ if (isWorking) {
 
   // Contributed by Brandon Benvie, October, 2012
   let createEmpty;
-  const supportsProto = {__proto__: null} instanceof Object === false;
+  const supportsProto = !({__proto__: null} instanceof ObjectCtr);
   // the following produces false positives
   // in Opera Mini => not a reliable check
   // Object.prototype.__proto__ === null
 
-  if (supportsProto || castBoolean(doc) === false) {
+  if (supportsProto || toBoolean(doc) === false) {
     createEmpty = function $createEmpty() {
       return {__proto__: null};
     };
@@ -105,13 +106,13 @@ if (isWorking) {
     // No need to use active x approach when document.domain is not set
     // see https://github.com/es-shims/es5-shim/issues/150
     // variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
-    const shouldUseActiveX = function _shouldUseActiveX() {
+    const shouldUseActiveX = function shouldUseActiveX() {
       // return early if document.domain not set
-      if (castBoolean(doc.domain) === false) {
+      if (toBoolean(doc.domain) === false) {
         return false;
       }
 
-      const result = attempt(() => {
+      const result = attempt(function attemptee() {
         /* eslint-disable-next-line no-undef */
         return new ActiveXObject('htmlfile');
       });
@@ -122,7 +123,7 @@ if (isWorking) {
     // This supports IE8 when document.domain is used
     // see https://github.com/es-shims/es5-shim/issues/150
     // variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
-    const getEmptyViaActiveX = function _getEmptyViaActiveX() {
+    const getEmptyViaActiveX = function getEmptyViaActiveX() {
       /* eslint-disable-next-line no-undef */
       let xDoc = new ActiveXObject('htmlfile');
       /* eslint-disable-next-line no-useless-escape,prettier/prettier */
@@ -139,7 +140,7 @@ if (isWorking) {
     // The original implementation using an iframe
     // before the activex approach was added
     // see https://github.com/es-shims/es5-shim/issues/150
-    const getEmptyViaIFrame = function _getEmptyViaIFrame() {
+    const getEmptyViaIFrame = function getEmptyViaIFrame() {
       let iframe = doc.createElement('iframe');
       iframe.style.display = 'none';
       /* eslint-disable-next-line no-script-url */

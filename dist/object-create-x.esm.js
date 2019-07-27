@@ -1,14 +1,12 @@
-function _newArrowCheck(innerThis, boundThis) { if (innerThis !== boundThis) { throw new TypeError("Cannot instantiate an arrow function"); } }
-
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 import attempt from 'attempt-x';
 import isPrimitive from 'is-primitive';
 import defineProperties from 'object-define-properties-x';
-/** @type {BooleanConstructor} */
-
-var castBoolean = true.constructor;
-var nativeCreate = typeof Object.create === 'function' && Object.create;
+import toBoolean from 'to-boolean-x';
+var ObjectCtr = {}.constructor;
+var nCreate = ObjectCtr.create;
+var nativeCreate = typeof nCreate === 'function' && nCreate;
 var isWorking;
 
 if (nativeCreate) {
@@ -96,13 +94,13 @@ if (isWorking) {
   var doc = typeof document !== 'undefined' && document; // Contributed by Brandon Benvie, October, 2012
 
   var createEmpty;
-  var supportsProto = {
+  var supportsProto = !({
     __proto__: null
-  } instanceof Object === false; // the following produces false positives
+  } instanceof ObjectCtr); // the following produces false positives
   // in Opera Mini => not a reliable check
   // Object.prototype.__proto__ === null
 
-  if (supportsProto || castBoolean(doc) === false) {
+  if (supportsProto || toBoolean(doc) === false) {
     createEmpty = function $createEmpty() {
       return {
         __proto__: null
@@ -113,27 +111,23 @@ if (isWorking) {
     // No need to use active x approach when document.domain is not set
     // see https://github.com/es-shims/es5-shim/issues/150
     // variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
-    var shouldUseActiveX = function _shouldUseActiveX() {
-      var _this = this;
-
+    var shouldUseActiveX = function shouldUseActiveX() {
       // return early if document.domain not set
-      if (castBoolean(doc.domain) === false) {
+      if (toBoolean(doc.domain) === false) {
         return false;
       }
 
-      var result = attempt(function () {
-        _newArrowCheck(this, _this);
-
+      var result = attempt(function attemptee() {
         /* eslint-disable-next-line no-undef */
         return new ActiveXObject('htmlfile');
-      }.bind(this));
+      });
       return result.threw === false && Boolean(result.value);
     }; // This supports IE8 when document.domain is used
     // see https://github.com/es-shims/es5-shim/issues/150
     // variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
 
 
-    var getEmptyViaActiveX = function _getEmptyViaActiveX() {
+    var getEmptyViaActiveX = function getEmptyViaActiveX() {
       /* eslint-disable-next-line no-undef */
       var xDoc = new ActiveXObject('htmlfile');
       /* eslint-disable-next-line no-useless-escape,prettier/prettier */
@@ -149,7 +143,7 @@ if (isWorking) {
     // see https://github.com/es-shims/es5-shim/issues/150
 
 
-    var getEmptyViaIFrame = function _getEmptyViaIFrame() {
+    var getEmptyViaIFrame = function getEmptyViaIFrame() {
       var iframe = doc.createElement('iframe');
       iframe.style.display = 'none';
       /* eslint-disable-next-line no-script-url */
