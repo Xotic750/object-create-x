@@ -2,7 +2,7 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-07-27T22:05:00.097Z",
+  "date": "2019-07-29T19:52:48.681Z",
   "describe": "",
   "description": "Sham for Object.create",
   "file": "object-create-x.js",
