@@ -1,75 +1,77 @@
-import create from '../src/object-create-x';
+import $create, {implementation} from '../src/object-create-x';
 
-describe('create', function() {
-  it('should create objects with no properties when called as `Object.create(null)`', function() {
-    expect.assertions(10);
-    const obj = create(null);
+[implementation, $create].forEach((create, testNum) => {
+  describe(`create ${testNum}`, function() {
+    it('should create objects with no properties when called as `Object.create(null)`', function() {
+      expect.assertions(10);
+      const obj = create(null);
 
-    expect('constructor' in obj).toBe(false);
-    expect('hasOwnProperty' in obj).toBe(false);
-    expect('propertyIsEnumerable' in obj).toBe(false);
-    expect('isPrototypeOf' in obj).toBe(false);
-    expect('toLocaleString' in obj).toBe(false);
-    expect('toString' in obj).toBe(false);
-    expect('valueOf' in obj).toBe(false);
+      expect('constructor' in obj).toBe(false);
+      expect('hasOwnProperty' in obj).toBe(false);
+      expect('propertyIsEnumerable' in obj).toBe(false);
+      expect('isPrototypeOf' in obj).toBe(false);
+      expect('toLocaleString' in obj).toBe(false);
+      expect('toString' in obj).toBe(false);
+      expect('valueOf' in obj).toBe(false);
 
-    let prop;
-    /* eslint-disable-next-line guard-for-in,no-restricted-syntax */
-    for (prop in obj) {
-      prop = false;
-      break;
-    }
-
-    expect(prop).toBe(void 0);
-
-    let protoIsEnumerable = false;
-    /* eslint-disable-next-line no-restricted-syntax */
-    for (prop in obj) {
-      if (prop === '__proto__') {
-        protoIsEnumerable = true;
+      let prop;
+      /* eslint-disable-next-line guard-for-in,no-restricted-syntax */
+      for (prop in obj) {
+        prop = false;
+        break;
       }
-    }
 
-    expect(protoIsEnumerable).toBe(false);
+      expect(prop).toBe(void 0);
 
-    expect(obj instanceof Object).toBe(false);
-  });
+      let protoIsEnumerable = false;
+      /* eslint-disable-next-line no-restricted-syntax */
+      for (prop in obj) {
+        if (prop === '__proto__') {
+          protoIsEnumerable = true;
+        }
+      }
 
-  it('should create properties', function() {
-    expect.assertions(1);
-    const obj = create(null, {test: {value: true}});
+      expect(protoIsEnumerable).toBe(false);
 
-    expect(obj.test).toBe(true);
-  });
+      expect(obj instanceof Object).toBe(false);
+    });
 
-  it('classical inheritance', function() {
-    expect.assertions(3); // Shape - superclass
-    const Shape = function() {
-      this.x = 0;
-      this.y = 0;
-    };
+    it('should create properties', function() {
+      expect.assertions(1);
+      const obj = create(null, {test: {value: true}});
 
-    // superclass method
-    Shape.prototype.move = function(x, y) {
-      this.x += x;
-      this.y += y;
+      expect(obj.test).toBe(true);
+    });
 
-      return 'Shape moved.';
-    };
+    it('classical inheritance', function() {
+      expect.assertions(3); // Shape - superclass
+      const Shape = function() {
+        this.x = 0;
+        this.y = 0;
+      };
 
-    // Rectangle - subclass
-    const Rectangle = function() {
-      Shape.call(this); // call super constructor.
-    };
+      // superclass method
+      Shape.prototype.move = function(x, y) {
+        this.x += x;
+        this.y += y;
 
-    // subclass extends superclass
-    Rectangle.prototype = create(Shape.prototype);
-    Rectangle.prototype.constructor = Rectangle;
+        return 'Shape moved.';
+      };
 
-    const rect = new Rectangle();
+      // Rectangle - subclass
+      const Rectangle = function() {
+        Shape.call(this); // call super constructor.
+      };
 
-    expect(rect instanceof Rectangle).toBe(true);
-    expect(rect instanceof Shape).toBe(true);
-    expect(rect.move(1, 1)).toBe('Shape moved.');
+      // subclass extends superclass
+      Rectangle.prototype = create(Shape.prototype);
+      Rectangle.prototype.constructor = Rectangle;
+
+      const rect = new Rectangle();
+
+      expect(rect instanceof Rectangle).toBe(true);
+      expect(rect instanceof Shape).toBe(true);
+      expect(rect.move(1, 1)).toBe('Shape moved.');
+    });
   });
 });

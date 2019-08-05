@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-08-04T23:23:50.646Z",
+  "date": "2019-08-05T17:31:51.477Z",
   "describe": "",
   "description": "Sham for Object.create",
   "file": "object-create-x.js",
-  "hash": "d526d539ed32514c0c10",
+  "hash": "0491af1cece81fec1f55",
   "license": "MIT",
   "version": "3.0.13"
 }
@@ -3164,6 +3164,7 @@ var object_define_properties_x_esm_defineProperties = function defineProperties(
 
 
 // CONCATENATED MODULE: ./dist/object-create-x.esm.js
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "implementation", function() { return object_create_x_esm_implementation; });
 function object_create_x_esm_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { object_create_x_esm_typeof = function _typeof(obj) { return typeof obj; }; } else { object_create_x_esm_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return object_create_x_esm_typeof(obj); }
 
 
@@ -3173,73 +3174,110 @@ function object_create_x_esm_typeof(obj) { if (typeof Symbol === "function" && t
 var object_create_x_esm_ObjectCtr = {}.constructor;
 var nCreate = object_create_x_esm_ObjectCtr.create;
 var nativeCreate = typeof nCreate === 'function' && nCreate;
-var object_create_x_esm_isWorking;
 
-if (nativeCreate) {
-  var object_create_x_esm_res = attempt_x_esm(nativeCreate, null);
-  object_create_x_esm_isWorking = object_create_x_esm_res.threw === false && object_create_x_esm_res.value && object_create_x_esm_typeof(object_create_x_esm_res.value) === 'object';
+var object_create_x_esm_test1 = function test1() {
+  var res = attempt_x_esm(nativeCreate, null);
+  return res.threw === false && res.value && object_create_x_esm_typeof(res.value) === 'object';
+};
 
-  if (object_create_x_esm_isWorking) {
-    /* eslint-disable-next-line guard-for-in,no-restricted-syntax,no-unused-vars */
-    // noinspection LoopStatementThatDoesntLoopJS
-    for (var _ in object_create_x_esm_res.value) {
-      object_create_x_esm_isWorking = false;
-      break;
+var object_create_x_esm_test2 = function test2() {
+  var res = attempt_x_esm(nativeCreate, null); // noinspection LoopStatementThatDoesntLoopJS
+
+  for (var _ in res.value)
+  /* eslint-disable-line guard-for-in,no-restricted-syntax */
+  {
+    return false;
+  }
+
+  return true;
+};
+
+var object_create_x_esm_test3 = function test3() {
+  var res = attempt_x_esm(nativeCreate, null, {
+    test: {
+      value: true
     }
-  }
+  });
+  return res.threw === false && res.value && object_create_x_esm_typeof(res.value) === 'object' && res.value.test === true;
+};
 
-  if (object_create_x_esm_isWorking) {
-    object_create_x_esm_res = attempt_x_esm(nativeCreate, null, {
-      test: {
-        value: true
-      }
-    });
-    object_create_x_esm_isWorking = object_create_x_esm_res.threw === false && object_create_x_esm_res.value && object_create_x_esm_typeof(object_create_x_esm_res.value) === 'object' && object_create_x_esm_res.value.test === true;
-  }
+var getShapes = function getShapes() {
+  // Shape - superclass
+  var Shape = function Shape() {
+    // noinspection JSUnusedGlobalSymbols
+    this.x = 0; // noinspection JSUnusedGlobalSymbols
 
-  if (object_create_x_esm_isWorking) {
-    // Shape - superclass
-    var Shape = function Shape() {
-      // noinspection JSUnusedGlobalSymbols
-      this.x = 0; // noinspection JSUnusedGlobalSymbols
-
-      this.y = 0;
-    }; // superclass method
+    this.y = 0;
+  }; // superclass method
 
 
-    Shape.prototype.move = function move(x, y) {
-      // noinspection JSUnusedGlobalSymbols
-      this.x += x; // noinspection JSUnusedGlobalSymbols
+  Shape.prototype.move = function move(x, y) {
+    // noinspection JSUnusedGlobalSymbols
+    this.x += x; // noinspection JSUnusedGlobalSymbols
 
-      this.y += y;
-      return 'Shape moved.';
-    }; // Rectangle - subclass
+    this.y += y;
+    return 'Shape moved.';
+  }; // Rectangle - subclass
 
 
-    var Rectangle = function Rectangle() {
-      Shape.call(this); // call super constructor.
-    };
+  var Rectangle = function Rectangle() {
+    Shape.call(this); // call super constructor.
+  };
 
-    object_create_x_esm_res = attempt_x_esm(nativeCreate, Shape.prototype);
-    object_create_x_esm_isWorking = object_create_x_esm_res.threw === false && object_create_x_esm_res.value && object_create_x_esm_typeof(object_create_x_esm_res.value) === 'object';
+  return {
+    Shape: Shape,
+    Rectangle: Rectangle
+  };
+};
 
-    if (object_create_x_esm_isWorking) {
-      // subclass extends superclass
-      Rectangle.prototype = object_create_x_esm_res.value;
-      Rectangle.prototype.constructor = Rectangle;
-      var rect = new Rectangle();
-      object_create_x_esm_isWorking = rect instanceof Rectangle;
+var object_create_x_esm_test4 = function test4() {
+  var _getShapes = getShapes(),
+      Shape = _getShapes.Shape;
 
-      if (object_create_x_esm_isWorking) {
-        object_create_x_esm_isWorking = rect instanceof Shape;
-      }
+  var res = attempt_x_esm(nativeCreate, Shape.prototype);
+  return res.threw === false && res.value && object_create_x_esm_typeof(res.value) === 'object';
+};
 
-      if (object_create_x_esm_isWorking) {
-        object_create_x_esm_isWorking = rect.move(1, 1) === 'Shape moved.';
-      }
-    }
-  }
-}
+var object_create_x_esm_test5 = function test5() {
+  var _getShapes2 = getShapes(),
+      Shape = _getShapes2.Shape,
+      Rectangle = _getShapes2.Rectangle;
+
+  var res = attempt_x_esm(nativeCreate, Shape.prototype); // subclass extends superclass
+
+  Rectangle.prototype = res.value;
+  Rectangle.prototype.constructor = Rectangle;
+  var rect = new Rectangle();
+  return rect instanceof Rectangle;
+};
+
+var object_create_x_esm_test6 = function test6() {
+  var _getShapes3 = getShapes(),
+      Shape = _getShapes3.Shape,
+      Rectangle = _getShapes3.Rectangle;
+
+  var res = attempt_x_esm(nativeCreate, Shape.prototype); // subclass extends superclass
+
+  Rectangle.prototype = res.value;
+  Rectangle.prototype.constructor = Rectangle;
+  var rect = new Rectangle();
+  return rect instanceof Shape;
+};
+
+var object_create_x_esm_test7 = function test7() {
+  var _getShapes4 = getShapes(),
+      Shape = _getShapes4.Shape,
+      Rectangle = _getShapes4.Rectangle;
+
+  var res = attempt_x_esm(nativeCreate, Shape.prototype); // subclass extends superclass
+
+  Rectangle.prototype = res.value;
+  Rectangle.prototype.constructor = Rectangle;
+  var rect = new Rectangle();
+  return rect.move(1, 1) === 'Shape moved.';
+};
+
+var object_create_x_esm_isWorking = to_boolean_x_esm(nativeCreate) && object_create_x_esm_test1() && object_create_x_esm_test2() && object_create_x_esm_test3() && object_create_x_esm_test4() && object_create_x_esm_test5() && object_create_x_esm_test6() && object_create_x_esm_test7();
 /**
  * This method method creates a new object with the specified prototype object and properties.
  *
@@ -3251,148 +3289,138 @@ if (nativeCreate) {
  * @returns {boolean} A new object with the specified prototype object and properties.
  */
 
+var object_create_x_esm_doc = typeof document !== 'undefined' && document;
+var supportsProto = to_boolean_x_esm({
+  __proto__: null
+} instanceof object_create_x_esm_ObjectCtr) === false; // Check for document.domain and active x support
+// No need to use active x approach when document.domain is not set
+// see https://github.com/es-shims/es5-shim/issues/150
+// variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
 
-var $create;
-
-if (object_create_x_esm_isWorking) {
-  $create = nativeCreate;
-} else {
-  var object_create_x_esm_doc = typeof document !== 'undefined' && document; // Contributed by Brandon Benvie, October, 2012
-
-  var createEmpty;
-  var supportsProto = !({
-    __proto__: null
-  } instanceof object_create_x_esm_ObjectCtr); // the following produces false positives
-  // in Opera Mini => not a reliable check
-  // Object.prototype.__proto__ === null
-
-  if (supportsProto || to_boolean_x_esm(object_create_x_esm_doc) === false) {
-    createEmpty = function $createEmpty() {
-      return {
-        __proto__: null
-      };
-    };
-  } else {
-    // Check for document.domain and active x support
-    // No need to use active x approach when document.domain is not set
-    // see https://github.com/es-shims/es5-shim/issues/150
-    // variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
-    var object_create_x_esm_shouldUseActiveX = function shouldUseActiveX() {
-      // return early if document.domain not set
-      if (to_boolean_x_esm(object_create_x_esm_doc.domain) === false) {
-        return false;
-      }
-
-      var result = attempt_x_esm(function attemptee() {
-        /* eslint-disable-next-line no-undef */
-        return new ActiveXObject('htmlfile');
-      });
-      return result.threw === false && Boolean(result.value);
-    }; // This supports IE8 when document.domain is used
-    // see https://github.com/es-shims/es5-shim/issues/150
-    // variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
-
-
-    var getEmptyViaActiveX = function getEmptyViaActiveX() {
-      /* eslint-disable-next-line no-undef */
-      var xDoc = new ActiveXObject('htmlfile');
-      /* eslint-disable-next-line no-useless-escape,prettier/prettier */
-
-      xDoc.write('<script><\/script>');
-      xDoc.close(); // noinspection JSUnresolvedVariable
-
-      var empty = xDoc.parentWindow.Object.prototype;
-      xDoc = null;
-      return empty;
-    }; // The original implementation using an iframe
-    // before the activex approach was added
-    // see https://github.com/es-shims/es5-shim/issues/150
-
-
-    var getEmptyViaIFrame = function getEmptyViaIFrame() {
-      var iframe = object_create_x_esm_doc.createElement('iframe');
-      iframe.style.display = 'none';
-      /* eslint-disable-next-line no-script-url */
-
-      iframe.src = 'javascript:';
-      var parent = object_create_x_esm_doc.body || object_create_x_esm_doc.documentElement;
-      parent.appendChild(iframe);
-      var empty = iframe.contentWindow.Object.prototype;
-      parent.removeChild(iframe);
-      iframe = null;
-      return empty;
-    }; // In old IE __proto__ can't be used to manually set `null`, nor does
-    // any other method exist to make an object that inherits from nothing,
-    // aside from Object.prototype itself. Instead, create a new global
-    // object and *steal* its Object.prototype and strip it bare. This is
-    // used as the prototype to create nullary objects.
-
-
-    createEmpty = function $createEmpty() {
-      // Determine which approach to use
-      // see https://github.com/es-shims/es5-shim/issues/150
-      var empty = object_create_x_esm_shouldUseActiveX() ? getEmptyViaActiveX() : getEmptyViaIFrame();
-      delete empty.constructor;
-      delete empty.hasOwnProperty;
-      delete empty.propertyIsEnumerable;
-      delete empty.isPrototypeOf;
-      delete empty.toLocaleString;
-      delete empty.toString;
-      delete empty.valueOf;
-      /* eslint-disable-next-line lodash/prefer-noop */
-
-      var E = function Empty() {};
-
-      E.prototype = empty; // short-circuit future calls
-
-      createEmpty = function $$createEmpty() {
-        return new E();
-      };
-
-      return new E();
-    };
+var object_create_x_esm_shouldUseActiveX = function shouldUseActiveX() {
+  // return early if document.domain not set
+  if (to_boolean_x_esm(object_create_x_esm_doc.domain) === false) {
+    return false;
   }
 
-  $create = function create(prototype, properties) {
-    var object;
-    /* eslint-disable-next-line lodash/prefer-noop */
+  var result = attempt_x_esm(function attemptee() {
+    /* eslint-disable-next-line no-undef */
+    return new ActiveXObject('htmlfile');
+  });
+  return result.threw === false && Boolean(result.value);
+}; // This supports IE8 when document.domain is used
+// see https://github.com/es-shims/es5-shim/issues/150
+// variation of https://github.com/kitcambridge/es5-shim/commit/4f738ac066346
 
-    var T = function Type() {}; // An empty constructor.
+
+var getEmptyViaActiveX = function getEmptyViaActiveX() {
+  /* eslint-disable-next-line no-undef */
+  var xDoc = new ActiveXObject('htmlfile');
+  /* eslint-disable-next-line no-useless-escape,prettier/prettier */
+
+  xDoc.write('<script><\/script>');
+  xDoc.close(); // noinspection JSUnresolvedVariable
+
+  var empty = xDoc.parentWindow.Object.prototype;
+  xDoc = null;
+  return empty;
+}; // The original implementation using an iframe
+// before the activex approach was added
+// see https://github.com/es-shims/es5-shim/issues/150
 
 
-    if (prototype === null) {
-      object = createEmpty();
-    } else {
-      if (is_primitive_default()(prototype)) {
-        // In the native implementation `parent` can be `null`
-        // OR *any* `instanceof Object`  (Object|Function|Array|RegExp|etc)
-        // Use `typeof` tho, b/c in old IE, DOM elements are not `instanceof Object`
-        // like they are in modern browsers. Using `Object.create` on DOM elements
-        // is...err...probably inappropriate, but the native version allows for it.
-        throw new TypeError('Object prototype may only be an Object or null'); // same msg as Chrome
-      }
+var getEmptyViaIFrame = function getEmptyViaIFrame() {
+  var iframe = object_create_x_esm_doc.createElement('iframe');
+  iframe.style.display = 'none';
+  /* eslint-disable-next-line no-script-url */
 
-      T.prototype = prototype;
-      object = new T(); // IE has no built-in implementation of `Object.getPrototypeOf`
-      // neither `__proto__`, but this manually setting `__proto__` will
-      // guarantee that `Object.getPrototypeOf` will work as expected with
-      // objects created using `Object.create`
+  iframe.src = 'javascript:';
+  var parent = object_create_x_esm_doc.body || object_create_x_esm_doc.documentElement;
+  parent.appendChild(iframe);
+  var empty = iframe.contentWindow.Object.prototype;
+  parent.removeChild(iframe);
+  iframe = null;
+  return empty;
+}; // the following produces false positives
+// in Opera Mini => not a reliable check
+// Object.prototype.__proto__ === null
 
-      /* eslint-disable-next-line no-proto */
 
-      object.__proto__ = prototype;
-    }
-
-    if (typeof properties !== 'undefined') {
-      object_define_properties_x_esm(object, properties);
-    }
-
-    return object;
+var createEmptyProto = function createEmpty() {
+  return {
+    __proto__: null
   };
-}
+}; // In old IE __proto__ can't be used to manually set `null`, nor does
+// any other method exist to make an object that inherits from nothing,
+// aside from Object.prototype itself. Instead, create a new global
+// object and *steal* its Object.prototype and strip it bare. This is
+// used as the prototype to create nullary objects.
 
-var object_create_x_esm_create = $create;
-/* harmony default export */ var object_create_x_esm = __webpack_exports__["default"] = (object_create_x_esm_create);
+
+var createEmptyNoProto = function createEmpty() {
+  // Determine which approach to use
+  // see https://github.com/es-shims/es5-shim/issues/150
+  var empty = object_create_x_esm_shouldUseActiveX() ? getEmptyViaActiveX() : getEmptyViaIFrame();
+  delete empty.constructor;
+  delete empty.hasOwnProperty;
+  delete empty.propertyIsEnumerable;
+  delete empty.isPrototypeOf;
+  delete empty.toLocaleString;
+  delete empty.toString;
+  delete empty.valueOf;
+  /* eslint-disable-next-line lodash/prefer-noop */
+
+  var E = function Empty() {};
+
+  E.prototype = empty; // short-circuit future calls
+
+  createEmptyNoProto = function createEmptyShortCircuit() {
+    return new E();
+  };
+
+  return new E();
+}; // Contributed by Brandon Benvie, October, 2012
+
+
+var createEmpty = supportsProto || to_boolean_x_esm(object_create_x_esm_doc) === false ? createEmptyProto : createEmptyNoProto;
+var object_create_x_esm_implementation = function create(prototype, properties) {
+  var object;
+  /* eslint-disable-next-line lodash/prefer-noop */
+
+  var T = function Type() {}; // An empty constructor.
+
+
+  if (prototype === null) {
+    object = createEmpty();
+  } else {
+    if (is_primitive_default()(prototype)) {
+      // In the native implementation `parent` can be `null`
+      // OR *any* `instanceof Object`  (Object|Function|Array|RegExp|etc)
+      // Use `typeof` tho, b/c in old IE, DOM elements are not `instanceof Object`
+      // like they are in modern browsers. Using `Object.create` on DOM elements
+      // is...err...probably inappropriate, but the native version allows for it.
+      throw new TypeError('Object prototype may only be an Object or null'); // same msg as Chrome
+    }
+
+    T.prototype = prototype;
+    object = new T(); // IE has no built-in implementation of `Object.getPrototypeOf`
+    // neither `__proto__`, but this manually setting `__proto__` will
+    // guarantee that `Object.getPrototypeOf` will work as expected with
+    // objects created using `Object.create`
+
+    /* eslint-disable-next-line no-proto */
+
+    object.__proto__ = prototype;
+  }
+
+  if (typeof properties !== 'undefined') {
+    object_define_properties_x_esm(object, properties);
+  }
+
+  return object;
+};
+var $create = object_create_x_esm_isWorking ? nativeCreate : object_create_x_esm_implementation;
+/* harmony default export */ var object_create_x_esm = __webpack_exports__["default"] = ($create);
 
 
 
