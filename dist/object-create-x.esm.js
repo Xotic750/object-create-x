@@ -1,7 +1,7 @@
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 import attempt from 'attempt-x';
-import isPrimitive from 'is-primitive';
+import isPrimitive from 'is-primitive-x';
 import defineProperties from 'object-define-properties-x';
 import toBoolean from 'to-boolean-x';
 var ObjectCtr = {}.constructor;

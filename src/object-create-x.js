@@ -1,5 +1,5 @@
 import attempt from 'attempt-x';
-import isPrimitive from 'is-primitive';
+import isPrimitive from 'is-primitive-x';
 import defineProperties from 'object-define-properties-x';
 import toBoolean from 'to-boolean-x';
 
