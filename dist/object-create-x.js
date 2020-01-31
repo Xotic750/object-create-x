@@ -2,11 +2,11 @@
 {
   "author": "Graham Fairweather",
   "copywrite": "Copyright (c) 2017",
-  "date": "2019-09-05T20:19:02.368Z",
+  "date": "2020-01-31T00:23:26.043Z",
   "describe": "",
   "description": "Sham for Object.create",
   "file": "object-create-x.js",
-  "hash": "f51fd37d7ce73cbc088b",
+  "hash": "76752b08e688b6bc5223",
   "license": "MIT",
   "version": "3.1.2"
 }
@@ -3645,7 +3645,7 @@ var object_define_properties_x_esm_defineProperties = function defineProperties(
 
 // CONCATENATED MODULE: ./dist/object-create-x.esm.js
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "implementation", function() { return object_create_x_esm_implementation; });
-function object_create_x_esm_typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { object_create_x_esm_typeof = function _typeof(obj) { return typeof obj; }; } else { object_create_x_esm_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return object_create_x_esm_typeof(obj); }
+function object_create_x_esm_typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { object_create_x_esm_typeof = function _typeof(obj) { return typeof obj; }; } else { object_create_x_esm_typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return object_create_x_esm_typeof(obj); }
 
 
 
